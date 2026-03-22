@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Book Barn Desktop Pro</title>
+  <title>Book Barn Library Terminal</title>
   <style>
     :root{
       --bg1:#0e2744;
@@ -14,7 +14,6 @@
       --muted:#6d7a88;
       --blue:#2563eb;
       --blue-dark:#1746a2;
-      --green:#16a34a;
       --shadow:0 18px 40px rgba(0,0,0,.28);
       --title:#f1f5f9;
     }
@@ -27,12 +26,25 @@
         radial-gradient(circle at 80% 25%, rgba(255,255,255,.05), transparent 22%),
         linear-gradient(135deg,var(--bg1),var(--bg2));
       user-select:none;
+      -webkit-user-select:none;
+    }
+
+    .meta-value,
+    .meta-label,
+    .result-main,
+    .modal-main,
+    .detail-box span,
+    .detail-desc,
+    .search-input{
+      user-select:text;
+      -webkit-user-select:text;
+      cursor:text;
     }
 
     .desktop{
       position:relative;
       width:100%;
-      height:calc(100% - 44px);
+      height:100%;
       padding:24px 18px;
     }
 
@@ -86,7 +98,6 @@
       gap:12px;
     }
     .task-right{display:flex;align-items:center;gap:12px}
-
     .task-restore{
       margin-right:auto;
       background:rgba(255,255,255,.08);
@@ -116,14 +127,13 @@
       display:flex;
       flex-direction:column;
       z-index:20;
-      resize:none;
     }
     .window.hidden{display:none}
     .window.maximized{
       left:0 !important;
       top:0 !important;
       width:100% !important;
-      height:calc(100% - 44px) !important;
+      height:100% !important;
       min-width:0;
       min-height:0;
       border-radius:0;
@@ -153,7 +163,9 @@
       min-width:0;
     }
     .titlebar-left span:last-child{
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
     .titlebar-controls{
       display:flex;
@@ -191,9 +203,14 @@
       padding-top:4px;
     }
     .brand-badge{
-      width:34px;height:34px;border-radius:10px;
-      display:grid;place-items:center;
-      background:#dbeafe;color:#1d4ed8;font-size:18px;
+      width:34px;
+      height:34px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      background:#dbeafe;
+      color:#1d4ed8;
+      font-size:18px;
       border:1px solid #bfdbfe;
     }
     .brand h1{margin:0;font-size:18px;line-height:1.1}
@@ -202,26 +219,52 @@
     .searchbar-wrap{position:relative}
     .searchbar-row{display:flex;gap:10px;align-items:center}
     .search-input{
-      flex:1;height:44px;border:1px solid #c9d4e0;border-radius:12px;padding:0 14px;
-      font-size:15px;outline:none;background:#fff;
+      flex:1;
+      height:44px;
+      border:1px solid #c9d4e0;
+      border-radius:12px;
+      padding:0 14px;
+      font-size:15px;
+      outline:none;
+      background:#fff;
     }
     .search-input:focus{
-      border-color:#7aa7ff;box-shadow:0 0 0 4px rgba(37,99,235,.10);
+      border-color:#7aa7ff;
+      box-shadow:0 0 0 4px rgba(37,99,235,.10);
     }
     .search-btn{
-      height:44px;border:0;border-radius:12px;padding:0 18px;background:var(--blue);
-      color:#fff;font-weight:600;cursor:pointer;
+      height:44px;
+      border:0;
+      border-radius:12px;
+      padding:0 18px;
+      background:var(--blue);
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
     }
     .search-btn:hover{background:var(--blue-dark)}
 
     .filter-row{
-      display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+      flex-wrap:wrap;
     }
     .filter-select{
-      height:36px;border:1px solid #c9d4e0;border-radius:10px;padding:0 12px;background:#fff;
-      font-size:13px;color:#334155;
+      height:36px;
+      border:1px solid #c9d4e0;
+      border-radius:10px;
+      padding:0 12px;
+      background:#fff;
+      font-size:13px;
+      color:#334155;
     }
-    .hint{color:#64748b;font-size:12px;margin-left:auto}
+    .hint{
+      color:#64748b;
+      font-size:12px;
+      margin-left:auto;
+    }
 
     .hot-keywords{
       display:flex;
@@ -255,19 +298,49 @@
 
     .suggestions{
       position:absolute;
-      top:52px;left:0;right:74px;background:#fff;border:1px solid #d7e0ea;
-      border-radius:12px;box-shadow:0 18px 40px rgba(16,24,40,.12);padding:8px;display:none;
-      z-index:40;max-height:310px;overflow:auto;
+      top:52px;
+      left:0;
+      right:74px;
+      background:#fff;
+      border:1px solid #d7e0ea;
+      border-radius:12px;
+      box-shadow:0 18px 40px rgba(16,24,40,.12);
+      padding:8px;
+      display:none;
+      z-index:40;
+      max-height:310px;
+      overflow:auto;
     }
     .suggestions.show{display:block}
     .suggestion{
-      padding:10px 12px;border-radius:10px;cursor:pointer;border:1px solid transparent;
-      display:flex;justify-content:space-between;gap:16px;align-items:flex-start;
+      padding:10px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      border:1px solid transparent;
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-start;
     }
-    .suggestion:hover{background:#f6f9ff;border-color:#d8e6ff}
-    .suggestion strong{display:block;font-size:14px;margin-bottom:2px}
-    .suggestion span{color:var(--muted);font-size:12px}
-    .suggestion .tag{color:#1d4ed8;white-space:nowrap;font-size:12px;margin-top:2px}
+    .suggestion:hover{
+      background:#f6f9ff;
+      border-color:#d8e6ff;
+    }
+    .suggestion strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:2px;
+    }
+    .suggestion span{
+      color:var(--muted);
+      font-size:12px;
+    }
+    .suggestion .tag{
+      color:#1d4ed8;
+      white-space:nowrap;
+      font-size:12px;
+      margin-top:2px;
+    }
 
     .content{
       background:var(--panel);
@@ -277,13 +350,28 @@
       position:relative;
     }
     .results-header{
-      background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:16px 18px;
+      margin-bottom:14px;
     }
     .results-header h2{
-      font-size:18px;margin:0 0 10px;display:flex;align-items:center;gap:10px;
+      font-size:18px;
+      margin:0 0 10px;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
-    .divider{height:1px;background:var(--line);margin:10px 0 12px}
-    .results-summary{font-size:14px;color:#334155}
+    .divider{
+      height:1px;
+      background:var(--line);
+      margin:10px 0 12px;
+    }
+    .results-summary{
+      font-size:14px;
+      color:#334155;
+    }
     .results-summary strong{color:#111827}
 
     .collection-grid{
@@ -293,20 +381,48 @@
       margin-top:14px;
     }
     .collection-card{
-      background:#f8fafc;border:1px solid #e6edf5;border-radius:14px;padding:14px;
+      background:#f8fafc;
+      border:1px solid #e6edf5;
+      border-radius:14px;
+      padding:14px;
     }
-    .collection-card h4{margin:0 0 6px; font-size:14px}
-    .collection-card p{margin:0; font-size:12px; color:#64748b; line-height:1.5}
+    .collection-card h4{
+      margin:0 0 6px;
+      font-size:14px;
+    }
+    .collection-card p{
+      margin:0;
+      font-size:12px;
+      color:#64748b;
+      line-height:1.5;
+    }
 
-    .result-list{display:flex;flex-direction:column;gap:14px}
+    .result-list{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
     .result-card{
-      background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;
-      display:grid;grid-template-columns:112px 1fr 180px;gap:18px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px;
+      display:grid;
+      grid-template-columns:112px 1fr 180px;
+      gap:18px;
     }
     .thumb{
-      width:112px;height:154px;border-radius:12px;overflow:hidden;border:1px solid #dbe3ee;
+      width:112px;
+      height:154px;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid #dbe3ee;
       box-shadow:0 8px 18px rgba(15,23,42,.08);
-      display:flex;flex-direction:column;justify-content:space-between;padding:12px;color:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      padding:12px;
+      color:#fff;
     }
     .thumb small{font-size:11px;opacity:.95}
     .thumb strong{font-size:17px;line-height:1.15;display:block}
@@ -318,30 +434,69 @@
     .cover-5{background:linear-gradient(135deg,#22c55e,#166534)}
     .cover-6{background:linear-gradient(135deg,#ef4444,#7f1d1d)}
 
-    .result-main h3{margin:0 0 10px;font-size:20px}
-    .subline{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    .result-main h3{
+      margin:0 0 10px;
+      font-size:20px;
+    }
+    .subline{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:12px;
+    }
     .badge{
-      display:inline-flex;align-items:center;height:26px;border-radius:999px;padding:0 10px;
-      font-size:12px;border:1px solid #dbe3ee;background:#f8fafc;color:#475569;
+      display:inline-flex;
+      align-items:center;
+      height:26px;
+      border-radius:999px;
+      padding:0 10px;
+      font-size:12px;
+      border:1px solid #dbe3ee;
+      background:#f8fafc;
+      color:#475569;
     }
     .badge.available{background:#ecfdf5;color:#166534;border-color:#bbf7d0}
     .badge.borrowed{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
     .badge.reference{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}
 
     .meta-grid{
-      display:grid;grid-template-columns:repeat(4, minmax(120px, 1fr));gap:10px 14px;margin-top:10px;
+      display:grid;
+      grid-template-columns:repeat(4, minmax(120px, 1fr));
+      gap:10px 14px;
+      margin-top:10px;
     }
     .meta{
-      background:#f8fafc;border:1px solid #e6edf5;border-radius:12px;padding:10px 12px;min-height:74px;
+      background:#f8fafc;
+      border:1px solid #e6edf5;
+      border-radius:12px;
+      padding:10px 12px;
+      min-height:74px;
     }
-    .meta-label{font-size:12px;color:var(--muted);margin-bottom:6px}
-    .meta-value{font-size:14px;line-height:1.35;word-break:keep-all}
+    .meta-label{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .meta-value{
+      font-size:14px;
+      line-height:1.35;
+      word-break:keep-all;
+    }
 
     .actions{
-      display:flex;flex-direction:column;gap:10px;justify-content:center;align-items:stretch;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      justify-content:center;
+      align-items:stretch;
     }
     .action-btn{
-      border:0;border-radius:12px;padding:12px 14px;font-weight:700;cursor:pointer;font-size:14px;
+      border:0;
+      border-radius:12px;
+      padding:12px 14px;
+      font-weight:700;
+      cursor:pointer;
+      font-size:14px;
     }
     .buy-btn{background:#111827;color:#fff}
     .loan-btn{background:#16a34a;color:#fff}
@@ -349,8 +504,31 @@
     .loan-btn.disabled{background:#94a3b8; cursor:not-allowed}
     .buy-btn:hover,.loan-btn:hover,.detail-btn:hover{opacity:.92}
 
+    .copy-btn{
+      margin-left:8px;
+      height:24px;
+      border:1px solid #cbd5e1;
+      border-radius:8px;
+      background:#fff;
+      color:#334155;
+      font-size:12px;
+      padding:0 8px;
+      cursor:pointer;
+      vertical-align:middle;
+    }
+    .copy-btn:hover{
+      background:#eff6ff;
+      border-color:#93c5fd;
+      color:#1d4ed8;
+    }
+
     .empty-state{
-      background:#fff;border:1px dashed #c7d3e0;border-radius:16px;padding:40px 24px;text-align:center;color:#64748b;
+      background:#fff;
+      border:1px dashed #c7d3e0;
+      border-radius:16px;
+      padding:40px 24px;
+      text-align:center;
+      color:#64748b;
     }
 
     .pagination{
@@ -396,13 +574,22 @@
     .window.maximized .resize-handle{display:none}
 
     .modal-overlay{
-      position:fixed; inset:0; background:rgba(15,23,42,.52); display:none;
-      align-items:center; justify-content:center; z-index:120;
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.52);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:120;
       padding:24px;
     }
     .modal-overlay.show{display:flex}
-    .modal{
+    .modal-wrap{
+      position:relative;
       width:min(920px, 100%);
+    }
+    .modal{
+      width:100%;
       max-height:90vh;
       overflow:auto;
       background:#fff;
@@ -416,7 +603,7 @@
     }
     .modal-cover{
       width:100%;
-      aspect-ratio: 0.72;
+      aspect-ratio:0.72;
       border-radius:16px;
       padding:18px;
       color:#fff;
@@ -425,7 +612,10 @@
       justify-content:space-between;
       box-shadow:0 12px 30px rgba(15,23,42,.16);
     }
-    .modal-main h3{margin:0 0 10px;font-size:28px}
+    .modal-main h3{
+      margin:0 0 10px;
+      font-size:28px;
+    }
     .modal-close{
       position:absolute;
       top:14px;
@@ -475,7 +665,10 @@
 
     @media (max-width: 1080px){
       .window{
-        left:16px;right:16px;width:auto;min-width:0;
+        left:16px;
+        right:16px;
+        width:auto;
+        min-width:0;
       }
       .result-card{grid-template-columns:1fr}
       .actions{flex-direction:row;flex-wrap:wrap}
@@ -496,20 +689,20 @@
       </div>
       <div class="desktop-icon" id="desktop-amazon">
         <span class="emoji">🛒</span>
-        <div class="label">아마존</div>
+        <div class="label">Amazon</div>
       </div>
     </div>
 
-    <section class="window" id="bookWindow" aria-label="도서 검색 창">
+    <section class="window" id="bookWindow" aria-label="Library search window">
       <div class="titlebar" id="titlebar">
         <div class="titlebar-left">
           <span>📚</span>
-          <span>Book Barn 도서검색</span>
+          <span>Book Barn Search</span>
         </div>
         <div class="titlebar-controls">
-          <button class="win-btn" id="minBtn" title="최소화">—</button>
-          <button class="win-btn" id="maxBtn" title="창모드 / 전체화면">□</button>
-          <button class="win-btn close" id="closeBtn" title="닫기">✕</button>
+          <button class="win-btn" id="minBtn" title="Minimize">—</button>
+          <button class="win-btn" id="maxBtn" title="Windowed / Full Screen">□</button>
+          <button class="win-btn close" id="closeBtn" title="Close">✕</button>
         </div>
       </div>
 
@@ -518,55 +711,55 @@
           <div class="brand-badge">📖</div>
           <div>
             <h1>Book Barn</h1>
-            <small>통합 도서검색 / 대출 / 열람 안내</small>
+            <small>Unified Catalog / Checkouts / Reference</small>
           </div>
         </div>
 
         <div class="search-panel">
           <div class="searchbar-wrap">
             <div class="searchbar-row">
-              <input id="searchInput" class="search-input" type="text" placeholder="책 이름, 글쓴이, 태그를 입력하세요" autocomplete="off" />
-              <button id="searchBtn" class="search-btn">검색</button>
+              <input id="searchInput" class="search-input" type="text" placeholder="Search by title, author, or tag" autocomplete="off" />
+              <button id="searchBtn" class="search-btn">Search</button>
             </div>
             <div id="suggestions" class="suggestions"></div>
           </div>
 
           <div class="filter-row">
             <select id="statusFilter" class="filter-select">
-              <option value="all">전체 상태</option>
-              <option value="대출 가능">대출 가능</option>
-              <option value="대출 중">대출 중</option>
-              <option value="열람 가능">열람 가능</option>
+              <option value="all">All Availability</option>
+              <option value="Available">Available</option>
+              <option value="Checked Out">Checked Out</option>
+              <option value="In-Library Use Only">In-Library Use Only</option>
             </select>
 
             <select id="yearFilter" class="filter-select">
-              <option value="all">전체 연도</option>
+              <option value="all">All Publication Years</option>
               <option value="2026">2026</option>
               <option value="2025">2025</option>
               <option value="2024">2024</option>
               <option value="2023">2023</option>
               <option value="2022">2022</option>
-              <option value="2021이전">2021 이전</option>
+              <option value="2021 or earlier">2021 or earlier</option>
             </select>
 
             <select id="sortFilter" class="filter-select">
-              <option value="relevance">관련도순</option>
-              <option value="title">제목순</option>
-              <option value="year_desc">발행년도 최신순</option>
-              <option value="year_asc">발행년도 오래된순</option>
+              <option value="relevance">Relevance</option>
+              <option value="title">Title (A-Z)</option>
+              <option value="year_desc">Newest First</option>
+              <option value="year_asc">Oldest First</option>
             </select>
 
-            <span class="hint">입력 즉시 연관검색 5개 표시</span>
+            <span class="hint">Instant suggestions (max 5)</span>
           </div>
 
           <div class="hot-keywords">
-            <span class="hot-title">인기검색어</span>
-            <button class="hot-chip" data-keyword="도서관">도서관</button>
-            <button class="hot-chip" data-keyword="수의학">수의학</button>
-            <button class="hot-chip" data-keyword="평행우주">평행우주</button>
-            <button class="hot-chip" data-keyword="캣닙">캣닙</button>
-            <button class="hot-chip" data-keyword="오컬트">오컬트</button>
-            <button class="hot-chip" data-keyword="도시">도시</button>
+            <span class="hot-title">Popular Searches</span>
+            <button class="hot-chip" data-keyword="library">library</button>
+            <button class="hot-chip" data-keyword="veterinary">veterinary</button>
+            <button class="hot-chip" data-keyword="parallel">parallel</button>
+            <button class="hot-chip" data-keyword="catnip">catnip</button>
+            <button class="hot-chip" data-keyword="occult">occult</button>
+            <button class="hot-chip" data-keyword="city">city</button>
           </div>
         </div>
       </div>
@@ -580,15 +773,15 @@
   </div>
 
   <div class="taskbar">
-    <button id="taskRestore" class="task-restore">📚 Book Barn 도서검색 복원</button>
+    <button id="taskRestore" class="task-restore">📚 Restore Library Window</button>
     <div class="task-right">
-      <span>KO</span>
+      <span>EN</span>
       <span id="clock">--:--</span>
     </div>
   </div>
 
   <div class="modal-overlay" id="detailModal">
-    <div class="modal-wrap" style="position:relative;width:min(920px, 100%);">
+    <div class="modal-wrap">
       <button class="modal-close" id="modalClose">✕</button>
       <div class="modal" id="modalContent"></div>
     </div>
@@ -596,39 +789,39 @@
 
   <script>
     const books = [
-      { title:"Hope of the Pridelands", author:"Miss Auburn", tags:["판타지","시리즈","베스트셀러"], dueDate:"2026-04-06", status:"대출 가능", regNo:"BB-240031", supplement:"있음", year:"2026", callNo:"813.6 A927h", location:"종합자료실 A-3", publisher:"Lighthouse Press", loanable:true, category:"문학", desc:"왕국의 몰락과 재건을 다룬 장편 판타지 소설입니다. 웅장한 서사와 감정선이 잘 살아 있어 베스트셀러 자료로 분류되어 있습니다.", cover:1 },
-      { title:"Three-Squares Mall Architecture Notes", author:"R. Halden", tags:["건축","지역사","몰"], dueDate:"2026-04-14", status:"대출 중", regNo:"BB-194582", supplement:"없음", year:"2017", callNo:"540.82 H167t", location:"사회과학실 B-1", publisher:"Gridline House", loanable:false, category:"건축", desc:"도시 외곽 대형 복합몰의 구조와 공간 활용을 정리한 건축 메모집입니다. 지역사 연구용으로도 자주 인용됩니다.", cover:2 },
-      { title:"Book Barn Special Collection Guide", author:"Library Archive Team", tags:["도서관","가이드","특별한 책"], dueDate:"2026-03-30", status:"열람 가능", regNo:"BB-000112", supplement:"있음", year:"2025", callNo:"020.7 L697b", location:"특별자료실", publisher:"Book Barn Archive", loanable:false, category:"도서관학", desc:"Book Barn의 특별 소장본 목록과 열람 절차를 정리한 안내 자료입니다. 희귀본 위치와 이용 규정도 포함되어 있습니다.", cover:3 },
-      { title:"Whodathunkit Café and Reading Culture", author:"Elena Porter", tags:["카페","문화","에세이"], dueDate:"2026-04-09", status:"대출 가능", regNo:"BB-110928", supplement:"없음", year:"2022", callNo:"818.02 P842w", location:"문학자료실 C-4", publisher:"Mellow Ink", loanable:true, category:"에세이", desc:"카페 문화와 독서 습관이 어떻게 연결되는지 따뜻하게 풀어낸 에세이집입니다.", cover:4 },
-      { title:"River Ridge Community Events", author:"Town Records Office", tags:["River Ridge","행사","지역"], dueDate:"2026-04-01", status:"대출 가능", regNo:"BB-440201", supplement:"없음", year:"2026", callNo:"911.3 T663r", location:"향토자료실", publisher:"Town Records", loanable:true, category:"향토자료", desc:"River Ridge 지역 축제와 계절 행사, 시민 모임 일정을 모은 공식 기록집입니다.", cover:5 },
-      { title:"Babylon Gardens Visitor Handbook", author:"Civic Publishing", tags:["Babylon Gardens","지역","안내서"], dueDate:"2026-04-11", status:"대출 가능", regNo:"BB-551100", supplement:"있음", year:"2024", callNo:"981.4 C582b", location:"여행자료실 D-2", publisher:"Civic Publishing", loanable:true, category:"여행", desc:"Babylon Gardens를 처음 방문하는 이용자를 위한 종합 안내서입니다. 동선, 추천 코스, 주변 시설이 잘 정리돼 있습니다.", cover:6 },
-      { title:"Grimoire", author:"H. P. Lovecraft Collection", tags:["마도서","고전","오컬트"], dueDate:"2026-04-20", status:"열람 가능", regNo:"BB-880019", supplement:"없음", year:"1934", callNo:"299.94 L897g", location:"희귀본서고", publisher:"Arkham House", loanable:false, category:"희귀본", desc:"오컬트와 금서 연구의 고전으로 여겨지는 자료입니다. 보존 상태 때문에 자료실 내 열람만 가능합니다.", cover:4 },
-      { title:"Rain Over River Ridge", author:"Mina Hollow", tags:["소설","청춘","우중충한도시"], dueDate:"2026-04-03", status:"대출 가능", regNo:"BB-220431", supplement:"없음", year:"2025", callNo:"813.7 H743r", location:"문학자료실 C-2", publisher:"Blue Tile", loanable:true, category:"소설", desc:"비 내리는 도시와 성장통을 배경으로 한 청춘 소설입니다. 잔잔하지만 묵직한 분위기가 특징입니다.", cover:2 },
-      { title:"Clinical Practice for Small Mammals", author:"Dr. Hannah Crowe", tags:["수의학","임상","실습"], dueDate:"2026-04-18", status:"대출 중", regNo:"BB-903314", supplement:"있음", year:"2026", callNo:"636.089 C953c", location:"자연과학실 E-1", publisher:"Medtail Press", loanable:false, category:"수의학", desc:"소형 포유류 임상 실습에서 자주 마주치는 사례를 중심으로 정리한 전문서입니다. 학생과 현장 실무자 모두에게 유용합니다.", cover:5 },
-      { title:"Emergency Care for Exotic Pets", author:"Louis Garner", tags:["수의학","응급처치","동물"], dueDate:"2026-04-08", status:"대출 가능", regNo:"BB-903315", supplement:"없음", year:"2024", callNo:"636.089 G242e", location:"자연과학실 E-1", publisher:"Medtail Press", loanable:true, category:"수의학", desc:"희귀 반려동물 응급 처치 기준과 기본 프로토콜을 정리한 실용 자료입니다.", cover:1 },
-      { title:"Parallel Doors and Other Theories", author:"Dora Wren", tags:["평행우주","이론","초자연"], dueDate:"2026-04-25", status:"열람 가능", regNo:"BB-771002", supplement:"있음", year:"2026", callNo:"001.94 W935p", location:"특별자료실", publisher:"Night School", loanable:false, category:"초자연", desc:"문을 매개로 한 이동 이론과 다중 현실 구조를 정리한 독특한 연구서입니다. 이용 빈도가 높은 특별자료입니다.", cover:6 },
-      { title:"IKEA After the End", author:"M. Cole", tags:["좀비","생존","기록"], dueDate:"2026-04-02", status:"대출 가능", regNo:"BB-770411", supplement:"없음", year:"2025", callNo:"823.91 C689i", location:"문학자료실 C-5", publisher:"North Exit", loanable:true, category:"소설", desc:"폐허가 된 대형 매장을 배경으로 생존자들의 선택을 그린 종말 소설입니다.", cover:3 },
-      { title:"Introduction to Rune Systems", author:"Selene Hart", tags:["룬","마법","입문"], dueDate:"2026-03-28", status:"대출 가능", regNo:"BB-501010", supplement:"있음", year:"2023", callNo:"133.43 H325i", location:"인문실 F-3", publisher:"Moon Lantern", loanable:true, category:"인문", desc:"룬 체계와 상징 구조를 이해하기 쉽게 정리한 입문서입니다.", cover:4 },
-      { title:"Alchemy for Field Researchers", author:"B. T. Rowan", tags:["연금술","연구","현장"], dueDate:"2026-04-12", status:"대출 중", regNo:"BB-501083", supplement:"있음", year:"2024", callNo:"540.1 R874a", location:"자연과학실 E-4", publisher:"Copper Shelf", loanable:false, category:"자연과학", desc:"현장 조사자들이 바로 참고할 수 있도록 구성된 응용 연금술 매뉴얼입니다.", cover:2 },
-      { title:"Mechanical Cities of the North", author:"Jules Ferren", tags:["기계","도시","북부"], dueDate:"2026-04-15", status:"대출 가능", regNo:"BB-610201", supplement:"없음", year:"2021", callNo:"307.76 F388m", location:"사회과학실 B-2", publisher:"Iron Atlas", loanable:true, category:"사회과학", desc:"기계화된 북부 도시들의 구조, 산업, 생활양식을 비교 분석한 도시 연구서입니다.", cover:1 },
-      { title:"왕정의 말기와 종교 재판", author:"서린 알트", tags:["왕정","역사","정치"], dueDate:"2026-04-07", status:"열람 가능", regNo:"BB-671120", supplement:"없음", year:"2022", callNo:"951.02 S291왕", location:"역사자료실 G-1", publisher:"해돋이서관", loanable:false, category:"역사", desc:"왕정 말기의 사회 분위기와 종교 재판의 전개 과정을 사료 중심으로 분석합니다.", cover:3 },
-      { title:"도시 봉쇄 대응 매뉴얼", author:"행정 안전 편찬위원회", tags:["재난","봉쇄","매뉴얼"], dueDate:"2026-04-04", status:"대출 가능", regNo:"BB-340010", supplement:"있음", year:"2026", callNo:"363.34 행742도", location:"사회과학실 B-5", publisher:"공공문고", loanable:true, category:"행정", desc:"비상 통제 상황에서 시민 안내, 물자 흐름, 접근 제한 절차를 정리한 공공 대응 문서입니다.", cover:6 },
-      { title:"Reading Habits of Late Summer", author:"P. Linden", tags:["독서","생활","에세이"], dueDate:"2026-04-16", status:"대출 가능", regNo:"BB-118922", supplement:"없음", year:"2023", callNo:"029.4 L744r", location:"교양자료실 A-1", publisher:"Mild Paper", loanable:true, category:"교양", desc:"늦여름의 독서 풍경과 사적인 독서 습관을 담담하게 기록한 산문집입니다.", cover:5 },
-      { title:"Catalog of Rare Beast Folklore", author:"Jina Vale", tags:["민속","마물","희귀자료"], dueDate:"2026-04-22", status:"열람 가능", regNo:"BB-781140", supplement:"있음", year:"2018", callNo:"398.245 V176c", location:"희귀본서고", publisher:"Field Whisper", loanable:false, category:"민속", desc:"각지에 전해지는 마물과 희귀 생물 설화를 도감 형식으로 정리한 자료입니다.", cover:4 },
-      { title:"Library Window Seat Essays", author:"Sora Im", tags:["에세이","도서관","감성"], dueDate:"2026-03-29", status:"대출 가능", regNo:"BB-118931", supplement:"없음", year:"2025", callNo:"814.6 I341l", location:"문학자료실 C-1", publisher:"담백출판", loanable:true, category:"에세이", desc:"도서관 창가 자리에 앉아 바라본 계절과 일상을 차분하게 담아낸 에세이입니다.", cover:2 },
-      { title:"The Silent Concrete Tomorrow", author:"Noel Brant", tags:["디스토피아","미래도시","누아르"], dueDate:"2026-04-13", status:"대출 가능", regNo:"BB-712009", supplement:"없음", year:"2024", callNo:"823.92 B826s", location:"문학자료실 C-5", publisher:"Greyline", loanable:true, category:"소설", desc:"지나치게 완벽한 미래 도시의 불안을 누아르 감성으로 풀어낸 디스토피아 소설입니다.", cover:6 },
-      { title:"Campus Internship Logbook", author:"River Ridge University", tags:["대학","실습","기록"], dueDate:"2026-04-10", status:"대출 중", regNo:"BB-430120", supplement:"있음", year:"2026", callNo:"378.1 R621c", location:"참고자료실", publisher:"RRU Press", loanable:false, category:"교육", desc:"현장 실습 기록과 체크리스트, 평가 항목을 담은 실습용 자료집입니다.", cover:1 },
-      { title:"한밤중 자료실 이용 규정", author:"북반 운영부", tags:["도서관","규정","안내"], dueDate:"2026-03-31", status:"열람 가능", regNo:"BB-001913", supplement:"없음", year:"2026", callNo:"027.4 북42한", location:"안내데스크", publisher:"Book Barn", loanable:false, category:"안내", desc:"야간 열람 시 준수해야 할 규정과 출입 절차, 소음 관리 기준이 정리된 내부 안내 문서입니다.", cover:3 },
-      { title:"Medicinal Herbs for Cats and Dogs", author:"Amelia Yoon", tags:["동물","약초","건강"], dueDate:"2026-04-05", status:"대출 가능", regNo:"BB-904220", supplement:"있음", year:"2023", callNo:"615.321 Y774m", location:"자연과학실 E-2", publisher:"Green Paw", loanable:true, category:"수의학", desc:"반려동물을 위한 약초 지식과 실제 적용 시 주의 사항을 다룬 참고서입니다.", cover:5 },
-      { title:"Mint, Perilla, and Catnip", author:"L. Mercer", tags:["캣닙","식물","꿀풀과"], dueDate:"2026-04-17", status:"대출 가능", regNo:"BB-502240", supplement:"있음", year:"2024", callNo:"581.634 M553m", location:"자연과학실 E-5", publisher:"Botany Window", loanable:true, category:"식물", desc:"민트, 깻잎, 캣닙의 계통과 향, 생육 특성을 비교한 식물학 교양서입니다.", cover:2 },
-      { title:"Occult Symbols Index", author:"Edgar Voss", tags:["오컬트","상징","사전"], dueDate:"2026-04-19", status:"열람 가능", regNo:"BB-880020", supplement:"있음", year:"2011", callNo:"133.3 V952o", location:"특별자료실", publisher:"Dark Ember", loanable:false, category:"사전", desc:"오컬트 상징과 문양을 사전 형식으로 정리한 참고자료입니다.", cover:4 },
-      { title:"Fables from the South Rune Coast", author:"Lina Crest", tags:["설화","남부","룬"], dueDate:"2026-04-21", status:"대출 가능", regNo:"BB-672055", supplement:"없음", year:"2022", callNo:"398.2 C923f", location:"인문실 F-4", publisher:"Seabell", loanable:true, category:"설화", desc:"남부 해안 지역의 룬과 설화를 모아 엮은 민담집입니다.", cover:6 },
-      { title:"Applied Search Interfaces for Public Libraries", author:"Keon Park", tags:["UI","도서검색","시스템"], dueDate:"2026-04-06", status:"대출 가능", regNo:"BB-150001", supplement:"있음", year:"2026", callNo:"025.04 P236a", location:"전산자료실", publisher:"Open Shelf", loanable:true, category:"전산", desc:"공공도서관 검색 인터페이스의 구조와 사용성 개선 방법을 다룬 실무형 자료입니다.", cover:1 },
-      { title:"Winter Ledger of the Western Guild", author:"Mara Flint", tags:["길드","서부","기록"], dueDate:"2026-04-01", status:"대출 가능", regNo:"BB-640113", supplement:"없음", year:"2021", callNo:"909.07 F623w", location:"역사자료실 G-4", publisher:"Ember Note", loanable:true, category:"역사", desc:"서부 길드의 겨울철 활동과 거래를 기록한 역사 문서집입니다.", cover:3 },
-      { title:"Borrower Services Handbook", author:"Public Service Desk", tags:["대출","이용안내","서비스"], dueDate:"2026-04-03", status:"열람 가능", regNo:"BB-002014", supplement:"없음", year:"2025", callNo:"025.58 P976b", location:"안내데스크", publisher:"Book Barn", loanable:false, category:"안내", desc:"대출, 반납, 연장, 예약에 관한 이용자 안내를 한 권으로 정리한 핸드북입니다.", cover:5 },
-      { title:"Atlas of Hidden Bookshops", author:"Nari Bell", tags:["서점","여행","지도"], dueDate:"2026-04-23", status:"대출 가능", regNo:"BB-560882", supplement:"있음", year:"2024", callNo:"915.2 B433a", location:"여행자료실 D-1", publisher:"Lantern Map", loanable:true, category:"여행", desc:"숨겨진 소규모 서점과 독립서점을 지도 형태로 정리한 여행 자료입니다.", cover:6 },
-      { title:"Practical Indexing and Metadata", author:"Cho Minseo", tags:["메타데이터","분류","도서관학"], dueDate:"2026-04-24", status:"대출 가능", regNo:"BB-150114", supplement:"없음", year:"2023", callNo:"025.3 조38실", location:"전산자료실", publisher:"지식정렬", loanable:true, category:"도서관학", desc:"분류 체계와 메타데이터의 기본 원칙을 실무 중심으로 설명하는 도서입니다.", cover:2 },
-      { title:"Night Study at the Archive", author:"Evelyn Shaw", tags:["미스터리","도서관","야간열람"], dueDate:"2026-04-08", status:"대출 중", regNo:"BB-221104", supplement:"없음", year:"2025", callNo:"823.94 S534n", location:"문학자료실 C-3", publisher:"Laneway", loanable:false, category:"미스터리", desc:"도서관 폐관 이후의 미묘한 정적과 비밀을 다루는 미스터리 소설입니다.", cover:4 }
+      { title:"Hope of the Pridelands", author:"Miss Auburn", tags:["fantasy","series","bestseller"], dueDate:"2026-04-06", status:"Available", regNo:"BB-240031", supplement:"Included", year:"2026", callNo:"813.6 A927h", location:"General Stacks A-3", publisher:"Lighthouse Press", loanable:true, category:"Fiction", desc:"A bestselling fantasy novel about the fall and rebuilding of a kingdom.", cover:1 },
+      { title:"Three-Squares Mall Architecture Notes", author:"R. Halden", tags:["architecture","local history","mall"], dueDate:"2026-04-14", status:"Checked Out", regNo:"BB-194582", supplement:"None", year:"2017", callNo:"540.82 H167t", location:"Social Sciences B-1", publisher:"Gridline House", loanable:false, category:"Architecture", desc:"Field notes and structural observations on a regional shopping complex.", cover:2 },
+      { title:"Book Barn Special Collection Guide", author:"Library Archive Team", tags:["library","guide","special collections"], dueDate:"2026-03-30", status:"In-Library Use Only", regNo:"BB-000112", supplement:"Included", year:"2025", callNo:"020.7 L697b", location:"Special Collections", publisher:"Book Barn Archive", loanable:false, category:"Library Science", desc:"A guide to Book Barn special holdings, reading rules, and access procedures.", cover:3 },
+      { title:"Whodathunkit Café and Reading Culture", author:"Elena Porter", tags:["cafe","culture","essay"], dueDate:"2026-04-09", status:"Available", regNo:"BB-110928", supplement:"None", year:"2022", callNo:"818.02 P842w", location:"Literature C-4", publisher:"Mellow Ink", loanable:true, category:"Essay", desc:"A warm essay collection about café life and reading habits.", cover:4 },
+      { title:"River Ridge Community Events", author:"Town Records Office", tags:["river ridge","events","local"], dueDate:"2026-04-01", status:"Available", regNo:"BB-440201", supplement:"None", year:"2026", callNo:"911.3 T663r", location:"Local History Room", publisher:"Town Records", loanable:true, category:"Local History", desc:"A civic record of festivals, seasonal events, and public gatherings in River Ridge.", cover:5 },
+      { title:"Babylon Gardens Visitor Handbook", author:"Civic Publishing", tags:["babylon gardens","local","guide"], dueDate:"2026-04-11", status:"Available", regNo:"BB-551100", supplement:"Included", year:"2024", callNo:"981.4 C582b", location:"Travel D-2", publisher:"Civic Publishing", loanable:true, category:"Travel", desc:"A visitor guide with routes, attractions, and practical tips for Babylon Gardens.", cover:6 },
+      { title:"Grimoire", author:"H. P. Lovecraft Collection", tags:["grimoires","classic","occult"], dueDate:"2026-04-20", status:"In-Library Use Only", regNo:"BB-880019", supplement:"None", year:"1934", callNo:"299.94 L897g", location:"Rare Books Vault", publisher:"Arkham House", loanable:false, category:"Rare Book", desc:"A classic occult title restricted to supervised reading-room use.", cover:4 },
+      { title:"Rain Over River Ridge", author:"Mina Hollow", tags:["novel","coming of age","rainy city"], dueDate:"2026-04-03", status:"Available", regNo:"BB-220431", supplement:"None", year:"2025", callNo:"813.7 H743r", location:"Literature C-2", publisher:"Blue Tile", loanable:true, category:"Fiction", desc:"A moody coming-of-age novel set in a rain-soaked city.", cover:2 },
+      { title:"Clinical Practice for Small Mammals", author:"Dr. Hannah Crowe", tags:["veterinary","clinical","internship"], dueDate:"2026-04-18", status:"Checked Out", regNo:"BB-903314", supplement:"Included", year:"2026", callNo:"636.089 C953c", location:"Natural Sciences E-1", publisher:"Medtail Press", loanable:false, category:"Veterinary Medicine", desc:"A practical clinical reference for students and professionals working with small mammals.", cover:5 },
+      { title:"Emergency Care for Exotic Pets", author:"Louis Garner", tags:["veterinary","emergency care","animals"], dueDate:"2026-04-08", status:"Available", regNo:"BB-903315", supplement:"None", year:"2024", callNo:"636.089 G242e", location:"Natural Sciences E-1", publisher:"Medtail Press", loanable:true, category:"Veterinary Medicine", desc:"Emergency care basics and treatment priorities for exotic companion animals.", cover:1 },
+      { title:"Parallel Doors and Other Theories", author:"Dora Wren", tags:["parallel worlds","theory","supernatural"], dueDate:"2026-04-25", status:"In-Library Use Only", regNo:"BB-771002", supplement:"Included", year:"2026", callNo:"001.94 W935p", location:"Special Collections", publisher:"Night School", loanable:false, category:"Supernatural Studies", desc:"An unusual theoretical work on doors, transit points, and layered realities.", cover:6 },
+      { title:"IKEA After the End", author:"M. Cole", tags:["zombies","survival","records"], dueDate:"2026-04-02", status:"Available", regNo:"BB-770411", supplement:"None", year:"2025", callNo:"823.91 C689i", location:"Literature C-5", publisher:"North Exit", loanable:true, category:"Fiction", desc:"A post-collapse survival story set inside an abandoned superstore.", cover:3 },
+      { title:"Introduction to Rune Systems", author:"Selene Hart", tags:["runes","magic","introduction"], dueDate:"2026-03-28", status:"Available", regNo:"BB-501010", supplement:"Included", year:"2023", callNo:"133.43 H325i", location:"Humanities F-3", publisher:"Moon Lantern", loanable:true, category:"Humanities", desc:"A beginner-friendly overview of rune systems and symbolic structures.", cover:4 },
+      { title:"Alchemy for Field Researchers", author:"B. T. Rowan", tags:["alchemy","research","field guide"], dueDate:"2026-04-12", status:"Checked Out", regNo:"BB-501083", supplement:"Included", year:"2024", callNo:"540.1 R874a", location:"Natural Sciences E-4", publisher:"Copper Shelf", loanable:false, category:"Natural Sciences", desc:"A practical field manual for researchers using applied alchemical methods.", cover:2 },
+      { title:"Mechanical Cities of the North", author:"Jules Ferren", tags:["machines","city","north"], dueDate:"2026-04-15", status:"Available", regNo:"BB-610201", supplement:"None", year:"2021", callNo:"307.76 F388m", location:"Social Sciences B-2", publisher:"Iron Atlas", loanable:true, category:"Urban Studies", desc:"A comparative study of northern industrial cities and machine-led infrastructure.", cover:1 },
+      { title:"The Late Monarchy and Religious Trials", author:"Serin Alt", tags:["monarchy","history","politics"], dueDate:"2026-04-07", status:"In-Library Use Only", regNo:"BB-671120", supplement:"None", year:"2022", callNo:"951.02 A468l", location:"History G-1", publisher:"Sunrise House", loanable:false, category:"History", desc:"A historical analysis of late-monarchy instability and religious trials.", cover:3 },
+      { title:"Urban Lockdown Response Manual", author:"Administrative Safety Board", tags:["disaster","lockdown","manual"], dueDate:"2026-04-04", status:"Available", regNo:"BB-340010", supplement:"Included", year:"2026", callNo:"363.34 A244u", location:"Social Sciences B-5", publisher:"Civic Press", loanable:true, category:"Public Administration", desc:"A public-facing manual covering emergency closure procedures and civic response.", cover:6 },
+      { title:"Reading Habits of Late Summer", author:"P. Linden", tags:["reading","lifestyle","essay"], dueDate:"2026-04-16", status:"Available", regNo:"BB-118922", supplement:"None", year:"2023", callNo:"029.4 L744r", location:"General Reading A-1", publisher:"Mild Paper", loanable:true, category:"General Interest", desc:"A quiet essay collection on late-summer reading routines and private rituals.", cover:5 },
+      { title:"Catalog of Rare Beast Folklore", author:"Jina Vale", tags:["folklore","beasts","rare materials"], dueDate:"2026-04-22", status:"In-Library Use Only", regNo:"BB-781140", supplement:"Included", year:"2018", callNo:"398.245 V176c", location:"Rare Books Vault", publisher:"Field Whisper", loanable:false, category:"Folklore", desc:"A catalog-format folklore volume documenting rare beasts and regional legends.", cover:4 },
+      { title:"Library Window Seat Essays", author:"Sora Im", tags:["essay","library","quiet"], dueDate:"2026-03-29", status:"Available", regNo:"BB-118931", supplement:"None", year:"2025", callNo:"814.6 I341l", location:"Literature C-1", publisher:"Plain Paper", loanable:true, category:"Essay", desc:"A reflective essay collection inspired by long afternoons in the library.", cover:2 },
+      { title:"The Silent Concrete Tomorrow", author:"Noel Brant", tags:["dystopia","future city","noir"], dueDate:"2026-04-13", status:"Available", regNo:"BB-712009", supplement:"None", year:"2024", callNo:"823.92 B826s", location:"Literature C-5", publisher:"Greyline", loanable:true, category:"Fiction", desc:"A noir dystopian novel set in a city that has become too perfect to trust.", cover:6 },
+      { title:"Campus Internship Logbook", author:"River Ridge University", tags:["college","internship","records"], dueDate:"2026-04-10", status:"Checked Out", regNo:"BB-430120", supplement:"Included", year:"2026", callNo:"378.1 R621c", location:"Reference Desk", publisher:"RRU Press", loanable:false, category:"Education", desc:"A structured internship record book with logs, checklists, and evaluation notes.", cover:1 },
+      { title:"After-Hours Reading Room Policy", author:"Book Barn Operations", tags:["library","policy","guide"], dueDate:"2026-03-31", status:"In-Library Use Only", regNo:"BB-001913", supplement:"None", year:"2026", callNo:"027.4 B724a", location:"Service Desk", publisher:"Book Barn", loanable:false, category:"Policy", desc:"Official reading-room rules and late-night access procedures for public terminals.", cover:3 },
+      { title:"Medicinal Herbs for Cats and Dogs", author:"Amelia Yoon", tags:["animals","herbs","health"], dueDate:"2026-04-05", status:"Available", regNo:"BB-904220", supplement:"Included", year:"2023", callNo:"615.321 Y774m", location:"Natural Sciences E-2", publisher:"Green Paw", loanable:true, category:"Veterinary Medicine", desc:"A practical herbal reference for canine and feline wellness support.", cover:5 },
+      { title:"Mint, Perilla, and Catnip", author:"L. Mercer", tags:["catnip","plants","lamiaceae"], dueDate:"2026-04-17", status:"Available", regNo:"BB-502240", supplement:"Included", year:"2024", callNo:"581.634 M553m", location:"Natural Sciences E-5", publisher:"Botany Window", loanable:true, category:"Botany", desc:"A comparative botanical study of mint, perilla, and catnip.", cover:2 },
+      { title:"Occult Symbols Index", author:"Edgar Voss", tags:["occult","symbols","dictionary"], dueDate:"2026-04-19", status:"In-Library Use Only", regNo:"BB-880020", supplement:"Included", year:"2011", callNo:"133.3 V952o", location:"Special Collections", publisher:"Dark Ember", loanable:false, category:"Reference", desc:"A reference index of occult symbols, signs, and ritual markings.", cover:4 },
+      { title:"Fables from the South Rune Coast", author:"Lina Crest", tags:["fables","south","runes"], dueDate:"2026-04-21", status:"Available", regNo:"BB-672055", supplement:"None", year:"2022", callNo:"398.2 C923f", location:"Humanities F-4", publisher:"Seabell", loanable:true, category:"Folklore", desc:"A collected volume of southern coastal fables with rune-related motifs.", cover:6 },
+      { title:"Applied Search Interfaces for Public Libraries", author:"Keon Park", tags:["ui","library search","systems"], dueDate:"2026-04-06", status:"Available", regNo:"BB-150001", supplement:"Included", year:"2026", callNo:"025.04 P236a", location:"Systems Room", publisher:"Open Shelf", loanable:true, category:"Information Systems", desc:"A practical guide to public-library catalog design and search usability.", cover:1 },
+      { title:"Winter Ledger of the Western Guild", author:"Mara Flint", tags:["guild","west","records"], dueDate:"2026-04-01", status:"Available", regNo:"BB-640113", supplement:"None", year:"2021", callNo:"909.07 F623w", location:"History G-4", publisher:"Ember Note", loanable:true, category:"History", desc:"A historical winter ledger documenting trade and movement within a western guild.", cover:3 },
+      { title:"Borrower Services Handbook", author:"Public Service Desk", tags:["checkout","guide","services"], dueDate:"2026-04-03", status:"In-Library Use Only", regNo:"BB-002014", supplement:"None", year:"2025", callNo:"025.58 P976b", location:"Service Desk", publisher:"Book Barn", loanable:false, category:"Library Services", desc:"A concise handbook covering checkout, renewals, holds, and account services.", cover:5 },
+      { title:"Atlas of Hidden Bookshops", author:"Nari Bell", tags:["bookstores","travel","maps"], dueDate:"2026-04-23", status:"Available", regNo:"BB-560882", supplement:"Included", year:"2024", callNo:"915.2 B433a", location:"Travel D-1", publisher:"Lantern Map", loanable:true, category:"Travel", desc:"A mapped guide to small and hidden bookshops across multiple regions.", cover:6 },
+      { title:"Practical Indexing and Metadata", author:"Cho Minseo", tags:["metadata","classification","library science"], dueDate:"2026-04-24", status:"Available", regNo:"BB-150114", supplement:"None", year:"2023", callNo:"025.3 C545p", location:"Systems Room", publisher:"Knowledge Order", loanable:true, category:"Library Science", desc:"A hands-on guide to metadata, indexing, and information organization.", cover:2 },
+      { title:"Night Study at the Archive", author:"Evelyn Shaw", tags:["mystery","library","after hours"], dueDate:"2026-04-08", status:"Checked Out", regNo:"BB-221104", supplement:"None", year:"2025", callNo:"823.94 S534n", location:"Literature C-3", publisher:"Laneway", loanable:false, category:"Mystery", desc:"A mystery novel centered on secrets hidden in an archive after closing time.", cover:4 }
     ];
 
     const PAGE_SIZE = 6;
@@ -667,6 +860,7 @@
     function normalize(text){
       return String(text || '').toLowerCase().trim();
     }
+
     function escapeHtml(text){
       return String(text)
         .replaceAll('&', '&amp;')
@@ -679,6 +873,7 @@
     function getSearchScore(book, query){
       const q = normalize(query);
       if(!q) return 0;
+
       let score = 0;
       const title = normalize(book.title);
       const author = normalize(book.author);
@@ -694,7 +889,10 @@
       if(publisher.includes(q)) score += 20;
       if(location.includes(q)) score += 12;
       if(category.includes(q)) score += 16;
-      book.tags.forEach(tag => { if(normalize(tag) === q) score += 35; });
+
+      book.tags.forEach(tag => {
+        if(normalize(tag) === q) score += 35;
+      });
 
       return score;
     }
@@ -702,7 +900,7 @@
     function passesYearFilter(book){
       const val = yearFilter.value;
       if(val === 'all') return true;
-      if(val === '2021이전') return Number(book.year) <= 2021;
+      if(val === '2021 or earlier') return Number(book.year) <= 2021;
       return book.year === val;
     }
 
@@ -717,12 +915,13 @@
       });
 
       const sort = sortFilter.value;
-      items.sort((a,b) => {
-        if(sort === 'title') return a.title.localeCompare(b.title, 'ko');
+      items.sort((a, b) => {
+        if(sort === 'title') return a.title.localeCompare(b.title, 'en');
         if(sort === 'year_desc') return Number(b.year) - Number(a.year);
         if(sort === 'year_asc') return Number(a.year) - Number(b.year);
         return getSearchScore(b, q) - getSearchScore(a, q) || Number(b.year) - Number(a.year);
       });
+
       return items;
     }
 
@@ -732,18 +931,19 @@
 
     function getMatchedField(book, query){
       const q = normalize(query);
-      if(!q) return '통합';
-      if(normalize(book.title).includes(q)) return '책이름';
-      if(normalize(book.author).includes(q)) return '글쓴이';
-      if(normalize(book.tags.join(' ')).includes(q)) return '태그';
-      if(normalize(book.publisher).includes(q)) return '출판사';
-      if(normalize(book.location).includes(q)) return '소장위치';
-      if(normalize(book.category).includes(q)) return '분야';
-      return '통합';
+      if(!q) return 'Combined';
+      if(normalize(book.title).includes(q)) return 'Title';
+      if(normalize(book.author).includes(q)) return 'Author';
+      if(normalize(book.tags.join(' ')).includes(q)) return 'Tags';
+      if(normalize(book.publisher).includes(q)) return 'Publisher';
+      if(normalize(book.location).includes(q)) return 'Location';
+      if(normalize(book.category).includes(q)) return 'Category';
+      return 'Combined';
     }
+
     function getStatusBadgeClass(status){
-      if(status === '대출 가능') return 'available';
-      if(status === '대출 중') return 'borrowed';
+      if(status === 'Available') return 'available';
+      if(status === 'Checked Out') return 'borrowed';
       return 'reference';
     }
 
@@ -754,6 +954,7 @@
         suggestions.innerHTML = '';
         return;
       }
+
       suggestions.innerHTML = items.map(book => `
         <div class="suggestion" data-title="${escapeHtml(book.title)}">
           <div>
@@ -763,30 +964,31 @@
           <div class="tag">${escapeHtml(book.tags[0])}</div>
         </div>
       `).join('');
+
       suggestions.classList.add('show');
     }
 
     function renderInitialState(){
       const total = books.length;
-      const available = books.filter(b => b.status === '대출 가능').length;
-      const borrowed = books.filter(b => b.status === '대출 중').length;
-      const reference = books.filter(b => b.status === '열람 가능').length;
+      const available = books.filter(b => b.status === 'Available').length;
+      const checkedOut = books.filter(b => b.status === 'Checked Out').length;
+      const inLibrary = books.filter(b => b.status === 'In-Library Use Only').length;
 
       resultsArea.innerHTML = `
         <div class="results-header">
-          <h2>🔎 도서 검색</h2>
+          <h2>🔎 Library Catalog Search</h2>
           <div class="divider"></div>
           <div class="results-summary">
-            현재 총 <strong>${total}</strong>건의 자료가 등록되어 있습니다. 책 이름, 글쓴이, 태그로 검색할 수 있으며 연관검색은 최대 <strong>5개</strong>까지 표시됩니다.
+            There are currently <strong>${total}</strong> items in the catalog. Search by title, author, or tags. Instant suggestions display up to <strong>5</strong> results.
           </div>
           <div class="collection-grid">
-            <div class="collection-card"><h4>대출 가능</h4><p>${available}건의 자료가 즉시 대출 가능합니다.</p></div>
-            <div class="collection-card"><h4>대출 중</h4><p>${borrowed}건은 현재 대출 중입니다.</p></div>
-            <div class="collection-card"><h4>열람 가능</h4><p>${reference}건은 자료실 내 열람 전용입니다.</p></div>
-            <div class="collection-card"><h4>추천 검색어</h4><p>도서관, 수의학, 평행우주, 캣닙, 도서검색</p></div>
+            <div class="collection-card"><h4>Available</h4><p>${available} items are available for checkout right now.</p></div>
+            <div class="collection-card"><h4>Checked Out</h4><p>${checkedOut} items are currently checked out.</p></div>
+            <div class="collection-card"><h4>In-Library Use Only</h4><p>${inLibrary} items must be used in the reading room.</p></div>
+            <div class="collection-card"><h4>Suggested Searches</h4><p>library, veterinary, parallel, catnip, occult</p></div>
           </div>
         </div>
-        <div class="empty-state">검색어를 입력해 주세요.</div>
+        <div class="empty-state">Please enter a search term.</div>
       `;
     }
 
@@ -794,9 +996,13 @@
       return `
         <div class="meta">
           <div class="meta-label">${escapeHtml(label)}</div>
-          <div class="meta-value">${escapeHtml(value)}</div>
+          <div class="meta-value">${value}</div>
         </div>
       `;
+    }
+
+    function registrationValue(regNo){
+      return `${escapeHtml(regNo)} <button class="copy-btn" type="button" data-copy="${escapeHtml(regNo)}">Copy</button>`;
     }
 
     function renderResults(query, page=1){
@@ -807,26 +1013,27 @@
       const items = currentResults;
       const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
       if(currentPage > totalPages) currentPage = totalPages;
+
       const startIndex = (currentPage - 1) * PAGE_SIZE;
       const pageItems = items.slice(startIndex, startIndex + PAGE_SIZE);
       const safeQuery = escapeHtml(query);
 
       const header = `
         <div class="results-header">
-          <h2>📚 검색 결과</h2>
+          <h2>📚 Search Results</h2>
           <div class="divider"></div>
           <div class="results-summary">
-            검색어 '<strong>${safeQuery}</strong>'에 대한 총 <strong>${items.length}</strong>건이 검색되었습니다.
+            <strong>${items.length}</strong> items found for “<strong>${safeQuery}</strong>”.
           </div>
         </div>
       `;
 
       if(items.length === 0){
-        resultsArea.innerHTML = header + `<div class="empty-state">일치하는 자료가 없습니다.</div>`;
+        resultsArea.innerHTML = header + `<div class="empty-state">No items found.</div>`;
         return;
       }
 
-      const cards = pageItems.map((book, idx) => `
+      const cards = pageItems.map(book => `
         <article class="result-card">
           <div class="thumb cover-${book.cover}">
             <small>${escapeHtml(book.category)}</small>
@@ -841,34 +1048,34 @@
               <span class="badge">${escapeHtml(book.callNo)}</span>
             </div>
             <div class="meta-grid">
-              ${metaBox('글쓴이', book.author)}
-              ${metaBox('태그', book.tags.join(', '))}
-              ${metaBox('반납예정일', book.dueDate)}
-              ${metaBox('자료상태', book.status)}
-              ${metaBox('등록번호', book.regNo)}
-              ${metaBox('부록여부', book.supplement)}
-              ${metaBox('발행년도', book.year)}
-              ${metaBox('검색기준', getMatchedField(book, query))}
-              ${metaBox('청구기호', book.callNo)}
-              ${metaBox('소장위치', book.location)}
-              ${metaBox('출판사', book.publisher)}
-              ${metaBox('대출가능여부', book.loanable ? '가능' : '불가')}
+              ${metaBox('Author', escapeHtml(book.author))}
+              ${metaBox('Tags', escapeHtml(book.tags.join(', ')))}
+              ${metaBox('Due Date', escapeHtml(book.dueDate))}
+              ${metaBox('Status', escapeHtml(book.status))}
+              ${metaBox('Registration No.', registrationValue(book.regNo))}
+              ${metaBox('Supplement', escapeHtml(book.supplement))}
+              ${metaBox('Publication Year', escapeHtml(book.year))}
+              ${metaBox('Match Field', escapeHtml(getMatchedField(book, query)))}
+              ${metaBox('Call Number', escapeHtml(book.callNo))}
+              ${metaBox('Location', escapeHtml(book.location))}
+              ${metaBox('Publisher', escapeHtml(book.publisher))}
+              ${metaBox('Availability', escapeHtml(book.loanable ? 'Available' : 'Unavailable'))}
             </div>
           </div>
           <div class="actions">
-            <button class="action-btn detail-btn" data-detail="${escapeHtml(book.regNo)}">상세보기</button>
-            <button class="action-btn buy-btn" data-buy="${escapeHtml(book.regNo)}">구매하기</button>
-            <button class="action-btn loan-btn ${book.loanable ? '' : 'disabled'}" data-loan="${escapeHtml(book.regNo)}">${book.loanable ? '대출하기' : '대출불가'}</button>
+            <button class="action-btn detail-btn" data-detail="${escapeHtml(book.regNo)}">View Details</button>
+            <button class="action-btn buy-btn" data-buy="${escapeHtml(book.regNo)}">Purchase</button>
+            <button class="action-btn loan-btn ${book.loanable ? '' : 'disabled'}" data-loan="${escapeHtml(book.regNo)}">${book.loanable ? 'Check Out' : 'Not Available'}</button>
           </div>
         </article>
       `).join('');
 
       let pagination = `<div class="pagination">`;
-      pagination += `<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">이전</button>`;
-      for(let i=1;i<=totalPages;i++){
-        pagination += `<button class="page-btn ${i===currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+      pagination += `<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">Previous</button>`;
+      for(let i = 1; i <= totalPages; i++){
+        pagination += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
       }
-      pagination += `<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">다음</button>`;
+      pagination += `<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Next</button>`;
       pagination += `</div>`;
 
       resultsArea.innerHTML = header + `<div class="result-list">${cards}</div>` + pagination;
@@ -877,6 +1084,7 @@
     function doSearch(value, page=1){
       const q = value.trim();
       suggestions.classList.remove('show');
+
       if(!q){
         currentQuery = '';
         currentResults = [];
@@ -884,12 +1092,14 @@
         renderInitialState();
         return;
       }
+
       renderResults(q, page);
     }
 
     function openDetail(regNo){
       const book = books.find(b => b.regNo === regNo);
       if(!book) return;
+
       modalContent.innerHTML = `
         <div class="modal-cover cover-${book.cover}">
           <small>${escapeHtml(book.category)}</small>
@@ -904,29 +1114,57 @@
             <span class="badge">${escapeHtml(book.callNo)}</span>
           </div>
           <div class="detail-grid">
-            <div class="detail-box"><strong>글쓴이</strong><span>${escapeHtml(book.author)}</span></div>
-            <div class="detail-box"><strong>출판사</strong><span>${escapeHtml(book.publisher)}</span></div>
-            <div class="detail-box"><strong>발행년도</strong><span>${escapeHtml(book.year)}</span></div>
-            <div class="detail-box"><strong>태그</strong><span>${escapeHtml(book.tags.join(', '))}</span></div>
-            <div class="detail-box"><strong>등록번호</strong><span>${escapeHtml(book.regNo)}</span></div>
-            <div class="detail-box"><strong>청구기호</strong><span>${escapeHtml(book.callNo)}</span></div>
-            <div class="detail-box"><strong>소장위치</strong><span>${escapeHtml(book.location)}</span></div>
-            <div class="detail-box"><strong>반납예정일</strong><span>${escapeHtml(book.dueDate)}</span></div>
-            <div class="detail-box"><strong>자료상태</strong><span>${escapeHtml(book.status)}</span></div>
-            <div class="detail-box"><strong>부록여부</strong><span>${escapeHtml(book.supplement)}</span></div>
+            <div class="detail-box"><strong>Author</strong><span>${escapeHtml(book.author)}</span></div>
+            <div class="detail-box"><strong>Publisher</strong><span>${escapeHtml(book.publisher)}</span></div>
+            <div class="detail-box"><strong>Publication Year</strong><span>${escapeHtml(book.year)}</span></div>
+            <div class="detail-box"><strong>Tags</strong><span>${escapeHtml(book.tags.join(', '))}</span></div>
+            <div class="detail-box"><strong>Registration No.</strong><span>${escapeHtml(book.regNo)} <button class="copy-btn" type="button" data-copy="${escapeHtml(book.regNo)}">Copy</button></span></div>
+            <div class="detail-box"><strong>Call Number</strong><span>${escapeHtml(book.callNo)}</span></div>
+            <div class="detail-box"><strong>Location</strong><span>${escapeHtml(book.location)}</span></div>
+            <div class="detail-box"><strong>Due Date</strong><span>${escapeHtml(book.dueDate)}</span></div>
+            <div class="detail-box"><strong>Status</strong><span>${escapeHtml(book.status)}</span></div>
+            <div class="detail-box"><strong>Supplement</strong><span>${escapeHtml(book.supplement)}</span></div>
           </div>
           <div class="detail-desc">${escapeHtml(book.desc)}</div>
           <div class="actions" style="margin-top:16px; flex-direction:row;">
-            <button class="action-btn buy-btn" onclick="alert('구매 페이지로 이동하는 동작을 연결하면 됩니다.')">구매하기</button>
-            <button class="action-btn loan-btn ${book.loanable ? '' : 'disabled'}" onclick="alert('${book.loanable ? '대출 신청이 가능합니다.' : '현재 대출할 수 없는 자료입니다.'}')">${book.loanable ? '대출하기' : '대출불가'}</button>
+            <button class="action-btn buy-btn" data-buy="${escapeHtml(book.regNo)}">Purchase</button>
+            <button class="action-btn loan-btn ${book.loanable ? '' : 'disabled'}" data-loan="${escapeHtml(book.regNo)}">${book.loanable ? 'Check Out' : 'Not Available'}</button>
           </div>
         </div>
       `;
+
       detailModal.classList.add('show');
     }
 
-    searchInput.addEventListener('input', (e) => renderSuggestions(e.target.value));
-    searchInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') doSearch(searchInput.value); });
+    function minimizeWindow(){
+      bookWindow.classList.add('hidden');
+      taskRestore.classList.add('show');
+    }
+
+    function restoreWindow(){
+      bookWindow.classList.remove('hidden');
+      taskRestore.classList.remove('show');
+      searchInput.focus();
+    }
+
+    function copyText(text){
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copied to clipboard');
+      }).catch(() => {
+        alert('Unable to copy automatically. Please copy it manually.');
+      });
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      renderSuggestions(e.target.value);
+    });
+
+    searchInput.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){
+        doSearch(searchInput.value);
+      }
+    });
+
     searchBtn.addEventListener('click', () => doSearch(searchInput.value));
 
     suggestions.addEventListener('click', (e) => {
@@ -938,24 +1176,20 @@
     });
 
     document.addEventListener('click', (e) => {
-      if(!e.target.closest('.searchbar-wrap')) suggestions.classList.remove('show');
+      if(!e.target.closest('.searchbar-wrap')){
+        suggestions.classList.remove('show');
+      }
 
       const pageBtn = e.target.closest('.page-btn');
       if(pageBtn && !pageBtn.disabled){
-        const targetPage = Number(pageBtn.dataset.page);
-        renderResults(currentQuery, targetPage);
+        renderResults(currentQuery, Number(pageBtn.dataset.page));
+        return;
       }
 
       const detailBtn = e.target.closest('[data-detail]');
-      if(detailBtn) openDetail(detailBtn.dataset.detail);
-
-      const buyBtn = e.target.closest('[data-buy]');
-      if(buyBtn) alert('구매 페이지로 이동하는 동작을 연결하면 됩니다.');
-
-      const loanBtn = e.target.closest('[data-loan]');
-      if(loanBtn){
-        const book = books.find(b => b.regNo === loanBtn.dataset.loan);
-        if(book) alert(book.loanable ? '대출 신청이 가능합니다.' : '현재 대출할 수 없는 자료입니다.');
+      if(detailBtn){
+        openDetail(detailBtn.dataset.detail);
+        return;
       }
 
       const hot = e.target.closest('.hot-chip');
@@ -963,6 +1197,27 @@
         const keyword = hot.dataset.keyword;
         searchInput.value = keyword;
         doSearch(keyword);
+        return;
+      }
+
+      const copyBtn = e.target.closest('[data-copy]');
+      if(copyBtn){
+        copyText(copyBtn.dataset.copy);
+        return;
+      }
+
+      const buyBtn = e.target.closest('[data-buy]');
+      if(buyBtn){
+        alert('Purchase link can be connected here.');
+        return;
+      }
+
+      const loanBtn = e.target.closest('[data-loan]');
+      if(loanBtn){
+        const book = books.find(b => b.regNo === loanBtn.dataset.loan);
+        if(book){
+          alert(book.loanable ? 'This item is available for checkout.' : 'This item is not available for checkout.');
+        }
       }
     });
 
@@ -977,33 +1232,25 @@
       });
     });
 
-    function minimizeWindow(){
-      bookWindow.classList.add('hidden');
-      taskRestore.classList.add('show');
-    }
-    function restoreWindow(){
-      bookWindow.classList.remove('hidden');
-      taskRestore.classList.remove('show');
-      searchInput.focus();
-    }
-
     minBtn.addEventListener('click', minimizeWindow);
     taskRestore.addEventListener('click', restoreWindow);
     desktopBookbarn.addEventListener('dblclick', restoreWindow);
     desktopBookbarn.addEventListener('click', restoreWindow);
+
     closeBtn.addEventListener('click', () => {
       bookWindow.classList.add('hidden');
       taskRestore.classList.remove('show');
     });
 
     let prevRect = null;
+
     function toggleMaximize(){
       if(!bookWindow.classList.contains('maximized')){
         prevRect = {
-          left: bookWindow.style.left || `${bookWindow.offsetLeft}px`,
-          top: bookWindow.style.top || `${bookWindow.offsetTop}px`,
-          width: bookWindow.style.width || `${bookWindow.offsetWidth}px`,
-          height: bookWindow.style.height || `${bookWindow.offsetHeight}px`,
+          left: `${bookWindow.offsetLeft}px`,
+          top: `${bookWindow.offsetTop}px`,
+          width: `${bookWindow.offsetWidth}px`,
+          height: `${bookWindow.offsetHeight}px`
         };
         bookWindow.classList.add('maximized');
         maxBtn.textContent = '❐';
@@ -1018,13 +1265,13 @@
         maxBtn.textContent = '□';
       }
     }
+
     maxBtn.addEventListener('click', toggleMaximize);
     titlebar.addEventListener('dblclick', (e) => {
       if(e.target.closest('.titlebar-controls')) return;
       toggleMaximize();
     });
 
-    // Dragging
     let dragging = false;
     let dragOffsetX = 0;
     let dragOffsetY = 0;
@@ -1038,9 +1285,9 @@
       dragOffsetY = e.clientY - bookWindow.offsetTop;
     });
 
-    // Resizing
     let resizing = false;
     let startW = 0, startH = 0, startX = 0, startY = 0;
+
     resizeHandle.addEventListener('mousedown', (e) => {
       if(bookWindow.classList.contains('maximized')) return;
       resizing = true;
@@ -1061,6 +1308,7 @@
         bookWindow.style.left = `${left}px`;
         bookWindow.style.top = `${top}px`;
       }
+
       if(resizing){
         const minW = 860;
         const minH = 560;
@@ -1080,20 +1328,24 @@
     });
 
     document.getElementById('desktop-amazon').addEventListener('dblclick', () => {
-      alert('아마존 아이콘이 추가되어 있습니다. 실제 링크를 연결하려면 원하는 주소를 넣으면 됩니다.');
+      alert('Connect a real Amazon URL here if needed.');
     });
 
     modalClose.addEventListener('click', () => detailModal.classList.remove('show'));
     detailModal.addEventListener('click', (e) => {
       if(e.target === detailModal) detailModal.classList.remove('show');
     });
+
     document.addEventListener('keydown', (e) => {
       if(e.key === 'Escape') detailModal.classList.remove('show');
     });
 
     renderInitialState();
+
     window.addEventListener('load', () => {
       bookWindow.classList.remove('hidden');
+      bookWindow.classList.add('maximized');
+      maxBtn.textContent = '❐';
       searchInput.focus();
     });
   </script>
