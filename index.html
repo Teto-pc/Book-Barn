@@ -663,6 +663,58 @@
       font-size:14px;
     }
 
+
+    .catalog-table-wrap{
+      margin-top:16px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+    }
+    .catalog-table-head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      background:#f8fafc;
+      font-size:14px;
+      color:#334155;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+    }
+    .catalog-table-scroll{
+      overflow:auto;
+      max-height:420px;
+    }
+    .catalog-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+      background:#fff;
+    }
+    .catalog-table th,
+    .catalog-table td{
+      padding:12px 14px;
+      border-bottom:1px solid #e6edf5;
+      text-align:left;
+      white-space:nowrap;
+    }
+    .catalog-table th{
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:#f8fafc;
+      color:#475569;
+      font-size:12px;
+      letter-spacing:.02em;
+    }
+    .catalog-table tr:hover td{
+      background:#f8fbff;
+    }
+    .catalog-row{
+      cursor:pointer;
+    }
+
     @media (max-width: 1080px){
       .window{
         left:16px;
@@ -803,7 +855,7 @@
       { title:"IKEA After the End", author:"M. Cole", tags:["zombies","survival","records"], dueDate:"2026-04-02", status:"Available", regNo:"BB-770411", supplement:"None", year:"2025", callNo:"823.91 C689i", location:"Literature C-5", publisher:"North Exit", loanable:true, category:"Fiction", desc:"A post-collapse survival story set inside an abandoned superstore.", cover:3 },
       { title:"Introduction to Rune Systems", author:"Selene Hart", tags:["runes","magic","introduction"], dueDate:"2026-03-28", status:"Available", regNo:"BB-501010", supplement:"Included", year:"2023", callNo:"133.43 H325i", location:"Humanities F-3", publisher:"Moon Lantern", loanable:true, category:"Humanities", desc:"A beginner-friendly overview of rune systems and symbolic structures.", cover:4 },
       { title:"Alchemy for Field Researchers", author:"B. T. Rowan", tags:["alchemy","research","field guide"], dueDate:"2026-04-12", status:"Checked Out", regNo:"BB-501083", supplement:"Included", year:"2024", callNo:"540.1 R874a", location:"Natural Sciences E-4", publisher:"Copper Shelf", loanable:false, category:"Natural Sciences", desc:"A practical field manual for researchers using applied alchemical methods.", cover:2 },
-      { title:"Mechanical Cities of the North", author:"Jules Ferren", tags:["machines","city","north"], dueDate:"2026-04-15", status:"Available", regNo:"BB-610201", supplement:"None", year:"2021", callNo:"307.76 F388m", location:"Social Sciences B-2", publisher:"Iron Atlas", loanable:true, category:"Urban Studies", desc:"A comparative study of northern industrial cities and machine-led infrastructure.", cover:1 },
+      { title:"Mechanical Cities of the North", author:"Jules Ferren", tags:["machines","city","north"], dueDate:"2026-04-15", status:"Available", regNo:"BB-610201", supplement:"None", year:"2021", callNo:"307.76 F388m", location:"Social Sciences B-2", publisher:"Iron Atlas", loanable:true, category:"Fiction", desc:"A comparative study of northern industrial cities and machine-led infrastructure.", cover:1 },
       { title:"The Late Monarchy and Religious Trials", author:"Serin Alt", tags:["monarchy","history","politics"], dueDate:"2026-04-07", status:"In-Library Use Only", regNo:"BB-671120", supplement:"None", year:"2022", callNo:"951.02 A468l", location:"History G-1", publisher:"Sunrise House", loanable:false, category:"History", desc:"A historical analysis of late-monarchy instability and religious trials.", cover:3 },
       { title:"Urban Lockdown Response Manual", author:"Administrative Safety Board", tags:["disaster","lockdown","manual"], dueDate:"2026-04-04", status:"Available", regNo:"BB-340010", supplement:"Included", year:"2026", callNo:"363.34 A244u", location:"Social Sciences B-5", publisher:"Civic Press", loanable:true, category:"Public Administration", desc:"A public-facing manual covering emergency closure procedures and civic response.", cover:6 },
       { title:"Reading Habits of Late Summer", author:"P. Linden", tags:["reading","lifestyle","essay"], dueDate:"2026-04-16", status:"Available", regNo:"BB-118922", supplement:"None", year:"2023", callNo:"029.4 L744r", location:"General Reading A-1", publisher:"Mild Paper", loanable:true, category:"General Interest", desc:"A quiet essay collection on late-summer reading routines and private rituals.", cover:5 },
@@ -821,7 +873,9 @@
       { title:"Borrower Services Handbook", author:"Public Service Desk", tags:["checkout","guide","services"], dueDate:"2026-04-03", status:"In-Library Use Only", regNo:"BB-002014", supplement:"None", year:"2025", callNo:"025.58 P976b", location:"Service Desk", publisher:"Book Barn", loanable:false, category:"Library Services", desc:"A concise handbook covering checkout, renewals, holds, and account services.", cover:5 },
       { title:"Atlas of Hidden Bookshops", author:"Nari Bell", tags:["bookstores","travel","maps"], dueDate:"2026-04-23", status:"Available", regNo:"BB-560882", supplement:"Included", year:"2024", callNo:"915.2 B433a", location:"Travel D-1", publisher:"Lantern Map", loanable:true, category:"Travel", desc:"A mapped guide to small and hidden bookshops across multiple regions.", cover:6 },
       { title:"Practical Indexing and Metadata", author:"Cho Minseo", tags:["metadata","classification","library science"], dueDate:"2026-04-24", status:"Available", regNo:"BB-150114", supplement:"None", year:"2023", callNo:"025.3 C545p", location:"Systems Room", publisher:"Knowledge Order", loanable:true, category:"Library Science", desc:"A hands-on guide to metadata, indexing, and information organization.", cover:2 },
-      { title:"Night Study at the Archive", author:"Evelyn Shaw", tags:["mystery","library","after hours"], dueDate:"2026-04-08", status:"Checked Out", regNo:"BB-221104", supplement:"None", year:"2025", callNo:"823.94 S534n", location:"Literature C-3", publisher:"Laneway", loanable:false, category:"Mystery", desc:"A mystery novel centered on secrets hidden in an archive after closing time.", cover:4 }
+      { title:"Night Study at the Archive", author:"Evelyn Shaw", tags:["mystery","library","after hours"], dueDate:"2026-04-08", status:"Checked Out", regNo:"BB-221104", supplement:"None", year:"2025", callNo:"823.94 S534n", location:"Literature C-3", publisher:"Laneway", loanable:false, category:"Mystery", desc:"A mystery novel centered on secrets hidden in an archive after closing time.", cover:4 },
+      { title:"Life of Henry Milton", author:"Arthur Klein", tags:["biography","history","milton"], dueDate:"2026-04-12", status:"Checked Out", regNo:"BB-990001", supplement:"None", year:"2019", callNo:"920.71 K64l", location:"History G-2", publisher:"Heritage Press", loanable:false, category:"Biography", desc:"A detailed biography of Henry Milton and the books written about him.", cover:3 },
+      { title:"The Love of Cats and Dogs", author:"Emily Harper", tags:["animals","romance","fiction"], dueDate:"2026-04-14", status:"Available", regNo:"BB-990002", supplement:"None", year:"2024", callNo:"823.91 H295l", location:"Literature C-6", publisher:"Silver Leaf", loanable:true, category:"Fiction", desc:"A lighthearted novel about the unlikely affection between cats and dogs.", cover:5 }
     ];
 
     const PAGE_SIZE = 6;
@@ -968,6 +1022,46 @@
       suggestions.classList.add('show');
     }
 
+
+    function renderCatalogTable(items){
+      return `
+        <div class="catalog-table-wrap">
+          <div class="catalog-table-head">
+            <strong>Catalog Overview</strong>
+            <span>${items.length} items</span>
+          </div>
+          <div class="catalog-table-scroll">
+            <table class="catalog-table">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Status</th>
+                  <th>Year</th>
+                  <th>Location</th>
+                  <th>Registration No.</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${items.map(book => `
+                  <tr class="catalog-row" data-detail="${escapeHtml(book.regNo)}">
+                    <td>${escapeHtml(book.category)}</td>
+                    <td>${escapeHtml(book.title)}</td>
+                    <td>${escapeHtml(book.author)}</td>
+                    <td>${escapeHtml(book.status)}</td>
+                    <td>${escapeHtml(book.year)}</td>
+                    <td>${escapeHtml(book.location)}</td>
+                    <td>${escapeHtml(book.regNo)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
     function renderInitialState(){
       const total = books.length;
       const available = books.filter(b => b.status === 'Available').length;
@@ -988,7 +1082,7 @@
             <div class="collection-card"><h4>Suggested Searches</h4><p>library, veterinary, parallel, catnip, occult</p></div>
           </div>
         </div>
-        <div class="empty-state">Please enter a search term.</div>
+        ${renderCatalogTable(books)}
       `;
     }
 
@@ -1078,7 +1172,7 @@
       pagination += `<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Next</button>`;
       pagination += `</div>`;
 
-      resultsArea.innerHTML = header + `<div class="result-list">${cards}</div>` + pagination;
+      resultsArea.innerHTML = header + renderCatalogTable(items) + `<div class="result-list">${cards}</div>` + pagination;
     }
 
     function doSearch(value, page=1){
